@@ -1,0 +1,117 @@
+{%extends "main_game.html"%}
+{%block content%}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <title>TP2: Le jeu du 2048 - Coulibaly Charles B T</title>
+    <link rel="shortcut icon" href="assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href={{url_for("static",filename="assets/favicon-16x16.png" )}}>
+    <link rel="icon" type="image/png" sizes="32x32" href={{url_for("static",filename="assets/favicon-32x32.png" )}}>
+    <link rel="icon" type="image/png" sizes="48x48" href={{url_for("static",filename="assets/favicon-48x48.png" )}}>
+    <link rel="manifest" href={{url_for("static",filename="assets/manifest.json" )}}>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="white">
+    <meta name="application-name" content="React 2048">
+    <link rel="apple-touch-icon" sizes="57x57" href={{url_for("static",filename="assets/apple-touch-icon-57x57.png" )}}>
+    <link rel="apple-touch-icon" sizes="60x60" href={{url_for("static",filename="assets/apple-touch-icon-60x60.png" )}}>
+    <link rel="apple-touch-icon" sizes="72x72" href={{url_for("static",filename="assets/apple-touch-icon-72x72.png" )}}>
+    <link rel="apple-touch-icon" sizes="76x76" href={{url_for("static",filename="assets/apple-touch-icon-76x76.png" )}}>
+    <link rel="apple-touch-icon" sizes="114x114" href={{url_for("static",filename="assets/apple-touch-icon-114x114.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="120x120" href={{url_for("static",filename="assets/apple-touch-icon-120x120.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="144x144" href={{url_for("static",filename="assets/apple-touch-icon-144x144.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="152x152" href={{url_for("static",filename="assets/apple-touch-icon-152x152.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="167x167" href={{url_for("static",filename="assets/apple-touch-icon-167x167.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="180x180" href={{url_for("static",filename="assets/apple-touch-icon-180x180.png"
+        )}}>
+    <link rel="apple-touch-icon" sizes="1024x1024"
+        href={{url_for("static",filename="assets/apple-touch-icon-1024x1024.png" )}}>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="2048">
+    <meta name="msapplication-TileColor" content="white">
+    <meta name="msapplication-TileImage" content="assets/mstile-144x144.png">
+    <meta name="msapplication-config" content={{url_for("static",filename="assets/browserconfig.xml" )}}>
+    <script defer="defer" src={{url_for("static",filename="bundle.js" )}}>
+    </script>
+</head>
+
+<body>
+    <div id="game"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+    <!--Start of Tawk.to Script-->
+
+    <script>
+        $(document).ready(function () {
+            $.fn.getScore = function(){
+                score = $("span[class='StyledText-sc-1kaozb2-0 cXnvPx']").first().text();
+                return score;
+            }
+
+            $.fn.getMaxScore = function(){
+                score = $("span[class='StyledText-sc-1kaozb2-0 cXnvPx']").last().text();
+                return score;
+            }
+        });
+
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/60e3aeb4649e0a0a5ccab251/1f9sm4t6v';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+
+        $(document).keyup(function(e){
+            //e.which is set by jQuery for those browsers that do not normally support e.keyCode.
+            var keyCode = e.keyCode || e.which;
+            if (keyCode == 38 || keyCode == 40 || keyCode == 37 || keyCode == 39) 
+            { 
+                if($.fn.getScore() > $.fn.getMaxScore()){
+                    $.ajax({
+                        data: {
+                            score: $.fn.getScore()
+                        },
+                        type: 'POST',
+                        url: '/process'
+                    })
+                    .done(function (data) {
+                        if (data.error) {
+                            $('#token_id').text(data.error).show();
+                            $('#successAlert').hide();
+                        }
+                        else {
+                            $('#token_id').text(data.position).show();
+                            $('#errorAlert').hide();
+                        }
+                    });
+                }
+                return false;
+            }
+        });
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+
+</html>
+{%endblock%}

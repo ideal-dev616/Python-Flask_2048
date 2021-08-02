@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:grey;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 0px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color:grey;
+}
+.colors{
+background-color:grey;
+}
+
+</style>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/slicknav.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/owl.carousel.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/owl.theme.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/css/animate.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/extras.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='new/css/responsive.css') }}">
+</head>
+<body>
+<div>
+<header id="header-wrap">
+  <!-- Navbar Start -->
+  <nav class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          <span class="icon-menu"></span>
+          <span class="icon-menu"></span>
+          <span class="icon-menu"></span>
+        </button>
+        <a href="index.html" class="navbar-brand"><img src="img/logo.png" alt=""></a>
+      </div>
+      <div class="collapse navbar-collapse" id="main-navbar">
+        <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
+          <li class="nav-item active" style="float: left;">
+            <a class="nav-link" href="/game">
+              New Game
+            </a>
+          </li>
+          <li class="float-left nav-item">
+            <a class="nav-link" href="/dashboard">
+              Admin Dashboard
+            </a>
+          </li>
+
+          <li class="float-right nav-item">
+            <a class="nav-link" href="/logout">
+              Log Out
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+{%block content%}
+
+{%endblock%}
+
+</body>
+
+</html>

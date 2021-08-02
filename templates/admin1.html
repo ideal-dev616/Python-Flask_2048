@@ -1,0 +1,203 @@
+{%extends "Base.html"%}
+{%block content%}
+<html lang="en">
+
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/animate/animate.css') }}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/select2/select2.min.css') }}">
+
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+
+
+    <style>
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        .highest.score {
+            text-align: right;
+            padding: 30px 0;
+            font-size: 25px;
+            color: #129a3c;
+            font-weight: 800;
+        }
+
+        .highest {
+            text-align: right;
+            padding: 30px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+    </style>
+    <!--===============================================================================================-->
+</head>
+
+<body>
+
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100" style="width: 100%;text-align: center;">
+                    <div>
+                        {%if player%}
+                        <div align="center">
+                            <h1>All Players</h1>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <div class="highest">MEILLEUR SCORE <span class="highest score">{{max}}<span></span></div>
+                            <div class="limiter">
+                                <div class="container-login100">
+                                    <div class="wrap-login100">
+
+                                        <section class="ftco-section">
+                                            <div class="container">
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="table-wrap">
+                                                            <table class="table table-responsive-xl">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>&nbsp;</th>
+                                                                        <th>User Name</th>
+                                                                        <th>Email</th>
+                                                                        <th>Score</th>
+                                                                        <th>&nbsp;</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {%for data in player%}
+
+                                                                    <tr class="alert" role="alert">
+                                                                        <td>
+                                                                            <label class="checkbox-wrap checkbox-primary">
+                                                                                <input type="checkbox" checked>
+                                                                                <span class="checkmark"></span>
+                                                                            </label>
+                                                                        </td>
+                                                                        <td class="d-flex align-items-center">
+                                                                            <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+                                                                            <div class="pl-3 email">
+                                                                                {{data.username}}
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>{{data.email}}</td>
+                                                                        <td class="status"><span class="active">{%for value in score%}
+                                                                                {%if value.user_id == data.id %}
+                                                                                {{value.score}}
+                                                                                {%endif%}
+                                                                                {%endfor%}</span></td>
+                                                                        <td>
+                                                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                                                            </button>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    {%endfor%}
+                                                                </tbody>
+
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {%endif%}
+                            {%if online_user%}
+                            <div align="center">
+                                <h1>All Players</h1>
+                            </div>
+                            <section class="ftco-section">
+                                <div class="container">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-wrap">
+                                                <table class="table table-responsive-xl">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>&nbsp;</th>
+                                                            <th>User Name</th>
+                                                            <th>online At</th>
+                                                            <th>Status</th>
+                                                            <th>&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {%for data in online_user%}
+
+
+                                                        <tr class="alert" role="alert">
+                                                            <td>
+                                                                <label class="checkbox-wrap checkbox-primary">
+                                                                    <input type="checkbox" checked>
+                                                                    <span class="checkmark"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td class="d-flex align-items-center">
+                                                                <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+                                                                <div class="pl-3 email">
+                                                                    {{data.name}}
+                                                                </div>
+                                                            </td>
+                                                            <td>{{data.online_at}}</td>
+                                                            <td class="status"><span class="active">{{data.status}}</span></td>
+                                                            <td>
+                                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        {%endfor%}
+
+                                                    </tbody>
+
+                                                </table>
+                                                {%endif%}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</body>
+
+</html>
+{%endblock%}

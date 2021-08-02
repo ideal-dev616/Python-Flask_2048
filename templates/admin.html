@@ -1,0 +1,336 @@
+{%extends "Base.html"%} {%block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/animate/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/select2/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <style>
+        .header-fixed {
+            background-color: #292c2f;
+            box-shadow: 0 1px 1px #ccc;
+            padding: 20px 40px;
+            height: 80px;
+            color: #ffffff;
+            box-sizing: border-box;
+            top: -100px;
+            -webkit-transition: top 0.3s;
+            transition: top 0.3s;
+        }
+        
+        .header-fixed .header-limiter {
+            max-width: 1200px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        /*	The header placeholder. It is displayed when the header is fixed to the top of the
+	browser window, in order to prevent the content of the page from jumping up. */
+        
+        .header-fixed-placeholder {
+            height: 80px;
+            display: none;
+        }
+        /* Logo */
+        
+        .header-fixed .header-limiter h1 {
+            float: left;
+            font: normal 28px Cookie, Arial, Helvetica, sans-serif;
+            line-height: 40px;
+            margin: 0;
+        }
+        
+        .header-fixed .header-limiter h1 span {
+            color: #5383d3;
+        }
+        /* The navigation links */
+        
+        .header-fixed .header-limiter a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .header-fixed .header-limiter nav {
+            font: 16px Arial, Helvetica, sans-serif;
+            line-height: 40px;
+            float: right;
+        }
+        
+        .header-fixed .header-limiter nav a {
+            display: inline-block;
+            padding: 0 5px;
+            text-decoration: none;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+        
+        .header-fixed .header-limiter nav a:hover {
+            opacity: 1;
+        }
+        
+        .header-fixed .header-limiter nav a.selected {
+            color: #608bd2;
+            pointer-events: none;
+            opacity: 1;
+        }
+        /* Fixed version of the header */
+        
+        body.fixed .header-fixed {
+            padding: 10px 40px;
+            height: 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        body.fixed .header-fixed-placeholder {
+            display: block;
+        }
+        
+        body.fixed .header-fixed .header-limiter h1 {
+            font-size: 24px;
+            line-height: 30px;
+        }
+        
+        body.fixed .header-fixed .header-limiter nav {
+            line-height: 28px;
+            font-size: 13px;
+        }
+        /* Making the header responsive */
+        
+        @media all and (max-width: 600px) {
+            .header-fixed {
+                padding: 20px 0;
+                height: 75px;
+            }
+            .header-fixed .header-limiter h1 {
+                float: none;
+                margin: -8px 0 10px;
+                text-align: center;
+                font-size: 24px;
+                line-height: 1;
+            }
+            .header-fixed .header-limiter nav {
+                line-height: 1;
+                float: none;
+            }
+            .header-fixed .header-limiter nav a {
+                font-size: 13px;
+            }
+            body.fixed .header-fixed {
+                display: none;
+            }
+        }
+        /*
+	 We are clearing the body's margin and padding, so that the header fits properly.
+	 We are also adding a height to demonstrate the scrolling behavior. You can remove
+	 these styles.
+ */
+        
+        body {
+            margin: 0;
+            padding: 0;
+            height: 1500px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+
+    <div class="limiter" style="height: 100%;">
+        <div class="container-login100" style="height: 100%;">
+                
+                {%if player_best%}
+            <div class="wrap-login100" style="width: 80%;text-align: center;position: relative;top:-300px;">
+
+                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                </div>
+                {%endif%}
+
+                {%if player%}
+            <div class="wrap-login100" style="width: 80%;text-align: center;position: relative;">
+
+                <div align="center">
+                    <h1>All Players</h1>
+                </div>
+                <div style="overflow-x:auto;">
+                    <div class="highest">MEILLEUR SCORE <span class="highest score">{{max}}<span></span></div>
+
+                    <section class="ftco-section">
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-wrap" style="overflow: hidden;">
+                                        <table class="table table-responsive-xl">
+                                            <thead>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th>User Name</th>
+                                                    <th>Email</th>
+                                                    <th>Score</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {%for data in player%}
+
+                                                <tr class="alert" role="alert">
+                                                    <td>
+                                                        <label class="checkbox-wrap checkbox-primary">
+                                                            <input type="checkbox" checked>
+                                                            <span class="checkmark"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td class="d-flex align-items-center">
+                                                        <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+                                                        <div class="pl-3 email">
+                                                            {{data.username}}
+                                                        </div>
+                                                    </td>
+                                                    <td>{{data.email}}</td>
+                                                    <td class="status"><span class="active">{%for value in score%}
+                                                            {%if value.user_id == data.user_id %}
+                                                            {{value.score}}
+                                                            {%endif%}
+                                                            {%endfor%}</span></td>
+                                                    <td>
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                            <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                                {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </section>
+
+                </div>
+                </div>
+                {%endif%}
+                {%if online_user%}
+            <div class="wrap-login100" style="width: 80%;text-align: center;position: relative;">
+
+                <div align="center">
+                    <h1>All Players</h1>
+                </div>
+                <section class="ftco-section">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-wrap" style="overflow: hidden;">
+                                    <table class="table table-responsive-xl">
+                                        <thead>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>User Name</th>
+                                                <th>online At</th>
+                                                <th>Status</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {%for data in online_user%}
+
+
+                                            <tr class="alert" role="alert">
+                                                <td>
+                                                    <label class="checkbox-wrap checkbox-primary">
+                                                        <input type="checkbox" checked>
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </td>
+                                                <td class="d-flex align-items-center">
+                                                    <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+                                                    <div class="pl-3 email">
+                                                        {{data.name}}
+                                                    </div>
+                                                </td>
+                                                <td>{{data.online_at}}</td>
+                                                <td class="status"><span class="active">{{data.status}}</span></td>
+                                                <td>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {%endfor%}
+
+                                        </tbody>
+
+                                    </table>
+                                    {%endif%}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+    {%if player_best%}
+
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    
+    <script type="text/javascript">
+        var users = {{player_best|tojson}};
+        var score = {{score_best|tojson}};
+        var user_chart = [];
+
+        for(var j=0;j<10;j++){
+            if(score[j] && score[j].user_id) {
+                for (var i = 0; i < users.length; i++) {
+                    if(users[i].user_id == score[j].user_id){
+                        user_chart.push({label:users[i].username, y:score[j].score})
+                    }   
+                }
+            }
+        }
+        
+        var options = {
+            title: {
+                text: "Users Score Chart   Best Top 10 Users"              
+            },
+            data: [              
+            {
+                type: "column",
+                dataPoints: user_chart
+            }
+            ]
+        };
+
+        $("#chartContainer").CanvasJSChart(options);
+    </script>
+    {%endif%}
+
+</body>
+
+
+
+</html>
+{%endblock%}

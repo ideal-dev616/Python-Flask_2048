@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login V1</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/animate/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/select2/select2.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
+    <style>
+        .header-fixed {
+            background-color: #292c2f;
+            box-shadow: 0 1px 1px #ccc;
+            padding: 20px 40px;
+            height: 80px;
+            color: #ffffff;
+            box-sizing: border-box;
+            top: -100px;
+
+            -webkit-transition: top 0.3s;
+            transition: top 0.3s;
+        }
+
+        .header-fixed .header-limiter {
+            max-width: 1200px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        /*	The header placeholder. It is displayed when the header is fixed to the top of the
+	browser window, in order to prevent the content of the page from jumping up. */
+
+        .header-fixed-placeholder {
+            height: 80px;
+            display: none;
+        }
+
+        /* Logo */
+
+        .header-fixed .header-limiter h1 {
+            float: left;
+            font: normal 28px Cookie, Arial, Helvetica, sans-serif;
+            line-height: 40px;
+            margin: 0;
+        }
+
+        .header-fixed .header-limiter h1 span {
+            color: #5383d3;
+        }
+
+        /* The navigation links */
+
+        .header-fixed .header-limiter a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header-fixed .header-limiter nav {
+            font: 16px Arial, Helvetica, sans-serif;
+            line-height: 40px;
+            float: right;
+        }
+
+        .header-fixed .header-limiter nav a {
+            display: inline-block;
+            padding: 0 5px;
+            text-decoration: none;
+            color: #ffffff;
+            opacity: 0.9;
+        }
+
+        .header-fixed .header-limiter nav a:hover {
+            opacity: 1;
+        }
+
+        .header-fixed .header-limiter nav a.selected {
+            color: #608bd2;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        /* Fixed version of the header */
+
+        body.fixed .header-fixed {
+            padding: 10px 40px;
+            height: 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        body.fixed .header-fixed-placeholder {
+            display: block;
+        }
+
+        body.fixed .header-fixed .header-limiter h1 {
+            font-size: 24px;
+            line-height: 30px;
+        }
+
+        body.fixed .header-fixed .header-limiter nav {
+            line-height: 28px;
+            font-size: 13px;
+        }
+
+
+        /* Making the header responsive */
+
+        @media all and (max-width: 600px) {
+
+            .header-fixed {
+                padding: 20px 0;
+                height: 75px;
+            }
+
+            .header-fixed .header-limiter h1 {
+                float: none;
+                margin: -8px 0 10px;
+                text-align: center;
+                font-size: 24px;
+                line-height: 1;
+            }
+
+            .header-fixed .header-limiter nav {
+                line-height: 1;
+                float: none;
+            }
+
+            .header-fixed .header-limiter nav a {
+                font-size: 13px;
+            }
+
+            body.fixed .header-fixed {
+                display: none;
+            }
+
+        }
+
+        /*
+	 We are clearing the body's margin and padding, so that the header fits properly.
+	 We are also adding a height to demonstrate the scrolling behavior. You can remove
+	 these styles.
+ */
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        header.c7-theme-corporate.c7-theme-default {
+            display: none;
+        }
+
+        .aui .color-scheme-default #wrapper,
+        .aui .color-scheme-default #banner {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .aui .color-scheme-default #wrapper {
+            max-width: unset;
+        }
+
+        .aui .color-scheme-default #main-content .portlet-column {
+            margin-bottom: 0;
+        }
+
+        .aui .color-scheme-default {
+            overflow-y: hidden !important;
+        }
+
+        .home_wrapper {
+            display: flex;
+            flex-flow: column nowrap;
+            /*  width: 100%;*/
+            height: 100%;
+            margin: 0px -20px 48px -20px;
+        }
+
+        .home_header {
+            height: 100%;
+            width: 100%;
+            background-color: #0285cd;
+            background-image: linear-gradient(to top, #0285cd 0%, #04befe 100%);
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+            z-index: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .home_header_image_1 {
+            background-image: url("https://www.noordhoff.nl/documents/2449749/20328920/Noordhoff_header_image_new_1.jpg/c6dd7796-0716-4a9c-b755-196d8e88770f?t=1576050553246");
+            background-size: cover;
+            background-repeat: no-repeat;
+            grid-column-start: 11;
+            grid-column-end: last-line;
+            grid-row-start: 1;
+            grid-row-end: last-line;
+            z-index: 2;
+            animation: animatedBackground 50s ease-out infinite;
+            -moz-animation: animatedBackground 50s ease-out infinite;
+            -webkit-animation: animatedBackground 50s ease-out infinite;
+            -ms-animation: animatedBackground 50s ease-out infinite;
+            -o-animation: animatedBackground 50s ease-out infinite;
+        }
+
+        .home_header_image_2 {
+            background-image: url("https://www.noordhoff.nl/documents/2449749/20328920/Noordhoff_DVDL2019_header_image_2.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            grid-column-start: 9;
+            grid-column-end: 11;
+            grid-row-start: 5;
+            grid-row-end: 7;
+            z-index: 3;
+            animation: animatedBackground 50s ease-out infinite;
+            -moz-animation: animatedBackground 50s ease-out infinite;
+            -webkit-animation: animatedBackground 50s ease-out infinite;
+            -ms-animation: animatedBackground 50s ease-out infinite;
+            -o-animation: animatedBackground 50s ease-out infinite;
+        }
+
+        .home_header_text_1 {
+            grid-column-start: 2;
+            grid-column-end: 15;
+            grid-row-start: 2;
+            grid-row-end: 6;
+            z-index: 3;
+            color: #ffffff;
+            padding: 1rem;
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .home_header_text_1 h1 {
+            margin: 0;
+            font-size: 5vw;
+            font-family: sans-serif;
+            padding: 5px;
+            font-weight: bold;
+            text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        #home_header_cta {
+            margin-top: 3rem;
+            background-color: #F6B300;
+            position: relative;
+            display: flex;
+            padding-right: 44px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .c7-button-large {
+            text-transform: uppercase;
+            padding: 17px 20px;
+        }
+
+        .c7-button-brand {
+            background: #0082c8;
+            border-bottom: 2px solid #00679f;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .c7-button {
+            border: 0;
+            border-radius: .25rem;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Bliss 2", "Helvetica Neue", "Roboto", Arial, sans-serif;
+            font-size: .875rem;
+            margin-bottom: 1.5625rem;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        #cta_icon {
+            font-style: normal !important;
+            transition: all ease-in-out .25s;
+            position: absolute;
+            margin-right: 4px;
+            margin-left: 18px;
+        }
+
+        #home_header_cta:hover,
+        #home_header_cta:active,
+        #home_header_cta:focus {
+            background-color: #ffce4c;
+        }
+
+        #home_header_cta:hover #cta_icon,
+        #home_header_cta:active #cta_icon,
+        #home_header_cta:focus #cta_icon {
+            margin-left: 24px;
+        }
+
+        .noordhoff_logo_1 {
+            grid-column-start: 15;
+            grid-column-end: last-line;
+            display: grid;
+            width: inherit;
+            position: absolute;
+            bottom: 0;
+            z-index: 3;
+        }
+
+        @keyframes animatedBackground {
+            0% {
+                background-position: 0% 0;
+            }
+
+            3.5% {
+                background-position: 0% 0;
+            }
+
+            3.5% {
+                background-position: 20% 0;
+            }
+
+            10.5% {
+                background-position: 20% 0;
+            }
+
+            13.8% {
+                background-position: 40% 0;
+            }
+
+            20.8% {
+                background-position: 40% 0;
+            }
+
+            24.1% {
+                background-position: 60% 0;
+            }
+
+            31.4% {
+                background-position: 60% 0;
+            }
+
+            34.7% {
+                background-position: 80% 0;
+            }
+
+            41.7% {
+                background-position: 80% 0;
+            }
+
+            45% {
+                background-position: 100% 0;
+            }
+
+            52% {
+                background-position: 100% 0;
+            }
+
+            55.3% {
+                background-position: 80% 0;
+            }
+
+            62.3% {
+                background-position: 80% 0;
+            }
+
+            65.6% {
+                background-position: 60% 0;
+            }
+
+            72.6% {
+                background-position: 60% 0;
+            }
+
+            75.9% {
+                background-position: 40% 0;
+            }
+
+            82.9% {
+                background-position: 40% 0;
+            }
+
+            86.2% {
+                background-position: 20% 0;
+            }
+
+            93.2% {
+                background-position: 20% 0;
+            }
+
+            96.5% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        @-moz-keyframes animatedBackground {
+            0% {
+                background-position: 0% 0;
+            }
+
+            3.5% {
+                background-position: 0% 0;
+            }
+
+            3.5% {
+                background-position: 20% 0;
+            }
+
+            10.5% {
+                background-position: 20% 0;
+            }
+
+            13.8% {
+                background-position: 40% 0;
+            }
+
+            20.8% {
+                background-position: 40% 0;
+            }
+
+            24.1% {
+                background-position: 60% 0;
+            }
+
+            31.4% {
+                background-position: 60% 0;
+            }
+
+            34.7% {
+                background-position: 80% 0;
+            }
+
+            41.7% {
+                background-position: 80% 0;
+            }
+
+            45% {
+                background-position: 100% 0;
+            }
+
+            52% {
+                background-position: 100% 0;
+            }
+
+            55.3% {
+                background-position: 80% 0;
+            }
+
+            62.3% {
+                background-position: 80% 0;
+            }
+
+            65.6% {
+                background-position: 60% 0;
+            }
+
+            72.6% {
+                background-position: 60% 0;
+            }
+
+            75.9% {
+                background-position: 40% 0;
+            }
+
+            82.9% {
+                background-position: 40% 0;
+            }
+
+            86.2% {
+                background-position: 20% 0;
+            }
+
+            93.2% {
+                background-position: 20% 0;
+            }
+
+            96.5% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+
+        @supports (-ms-ime-align: auto) {
+            #cta_icon {
+                position: unset;
+            }
+
+            .noordhoff_logo_1 {
+                position: unset;
+            }
+
+            .home_header_text_1 {
+                margin-top: 3.25rem;
+            }
+
+            #home_header_cta:hover,
+            #home_header_cta:active,
+            #home_header_cta:focus {
+                padding-right: 38px;
+            }
+        }
+
+        @media all and (-ms-high-contrast: none),
+        (-ms-high-contrast: active) {
+            .home_wrapper {
+                display: flex;
+                flex-flow: row nowrap;
+                width: 100%;
+                height: 70vh;
+            }
+
+            .home_header {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                flex-flow: column nowrap;
+                position: relative;
+            }
+
+            .home_header_image_1 {
+                display: block;
+                width: 50%;
+                height: 100%;
+                position: absolute;
+                float: right;
+                right: 0;
+            }
+
+            .home_header_text_1 {
+                display: block;
+                float: left;
+                width: 50% !important;
+                position: relative;
+                margin-top: 2rem;
+            }
+
+            .home_header_text_1 h1 {
+                z-index: 6;
+                display: block;
+            }
+
+            #home_header_cta {
+                width: auto;
+                display: block;
+                flex-flow: row nowrap;
+                justify-content: center;
+                align-items: center;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+
+            #cta_icon {
+                margin-top: 5px;
+            }
+
+            .noordhoff_logo_1 {
+                width: 25% !important;
+                display: block;
+                right: 0;
+            }
+        }
+
+        @media screen and (max-width: 470) {
+            .home_wrapper {
+                height: 100vh;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            .home_wrapper {
+                height: auto;
+            }
+
+            .home_header {
+                grid-template-columns: 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw;
+                grid-template-rows: 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw 12.5vw;
+            }
+
+            .home_header_image_1 {
+                grid-column-start: 1;
+                grid-column-end: last-line;
+                grid-row-start: 9;
+                grid-row-end: last-line;
+            }
+
+            .home_header_image_2 {
+                display: none;
+            }
+
+            .home_header_text_1 {
+                grid-column-start: 1;
+                grid-column-end: last-line;
+                grid-row-start: 1;
+                grid-row-end: 9;
+            }
+
+            .home_header_text_1 h1 {
+                font-size: 8vw;
+            }
+
+            .noordhoff_logo_1 {
+                grid-column-start: 1;
+                grid-column-end: last-line;
+                grid-row-start: 13;
+                grid-row-start: last-line;
+            }
+
+            .body {
+                padding-left: 0 !important;
+            }
+            
+
+        }
+    </style>
+</head>
+
+<body>
+
+
+   <header class="header-fixed">
+
+        <div class="header-limiter">
+
+            <h1><a href="/" style="font-size: 35px;">20<span>48</span></a></h1>
+
+            <nav>
+                <a class="nav-link" href="/game" style="color: white;">
+                    <i class="fa fa-fw fa-home" aria-hidden="true"></i>
+
+                    &nbsp;&nbsp;&nbsp;Game&nbsp;&nbsp;&nbsp;&nbsp;
+                </a>
+                {%if admin == "yes"%}
+                <a class="nav-link" href="/dashboard" style="color: white;">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>
+                    &nbsp;&nbsp;&nbsp;Admin Dashboard&nbsp;&nbsp;&nbsp;&nbsp;
+                </a>
+                {%endif%}
+
+                <a class="nav-link" href="/logout" style="color: white;">
+                    <i class="fa fa-power-off" aria-hidden="true"></i>
+                    &nbsp;&nbsp;&nbsp;Log Out
+                </a>
+            </nav>
+
+        </div>
+
+    </header>
+
+    
+
+      <div class="row">
+        <div class="col-sm-3 col-md-6">
+          
+          
+        </div>
+      </div>
+      
+    <div class="home_wrapper" style="width: 100%;">
+      <div class="home_header snow">
+          <div class="home_header_image_1">&nbsp;</div>
+          {%block content%}
+          {%endblock%}
+        </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        (function() {
+
+            var COUNT = 300;
+            var masthead = document.querySelector('.snow');
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var width = masthead.clientWidth;
+            var height = masthead.clientHeight;
+            var i = 0;
+            var active = false;
+
+            function onResize() {
+                width = masthead.clientWidth;
+                height = masthead.clientHeight;
+                canvas.width = width;
+                canvas.height = height;
+                ctx.fillStyle = '#FFF';
+
+                var wasActive = active;
+                active = width > 600;
+
+                if (!wasActive && active)
+                    requestAnimFrame(update);
+            }
+
+            var Snowflake = function() {
+                this.x = 0;
+                this.y = 0;
+                this.vy = 0;
+                this.vx = 0;
+                this.r = 0;
+
+                this.reset();
+            }
+
+            Snowflake.prototype.reset = function() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * -height;
+                this.vy = 1 + Math.random() * 3;
+                this.vx = 0.5 - Math.random();
+                this.r = 1 + Math.random() * 2;
+                this.o = 0.5 + Math.random() * 0.5;
+            }
+
+            canvas.style.position = 'absolute';
+            canvas.style.left = canvas.style.top = '0';
+
+            var snowflakes = [],
+                snowflake;
+            for (i = 0; i < COUNT; i++) {
+                snowflake = new Snowflake();
+                snowflake.reset();
+                snowflakes.push(snowflake);
+            }
+
+            function update() {
+
+                ctx.clearRect(0, 0, width, height);
+
+                if (!active)
+                    return;
+
+                for (i = 0; i < COUNT; i++) {
+                    snowflake = snowflakes[i];
+                    snowflake.y += snowflake.vy;
+                    snowflake.x += snowflake.vx;
+
+                    ctx.globalAlpha = snowflake.o;
+                    ctx.beginPath();
+                    ctx.arc(snowflake.x, snowflake.y, snowflake.r, 0, Math.PI * 2, false);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    if (snowflake.y > height) {
+                        snowflake.reset();
+                    }
+                }
+
+                requestAnimFrame(update);
+            }
+
+            window.requestAnimFrame = (function() {
+                return window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    function(callback) {
+                        window.setTimeout(callback, 1000 / 60);
+                    };
+            })();
+
+            onResize();
+            window.addEventListener('resize', onResize, false);
+
+            masthead.appendChild(canvas);
+        })();
+        $(document).ready(function() {
+
+            var showHeaderAt = 150;
+
+            var win = $(window),
+                body = $('body');
+
+            // Show the fixed header only on larger screen devices
+
+            if (win.width() > 400) {
+
+                // When we scroll more than 150px down, we set the
+                // "fixed" class on the body element.
+
+                win.on('scroll', function(e) {
+
+                    if (win.scrollTop() > showHeaderAt) {
+                        body.addClass('fixed');
+                    } else {
+                        body.removeClass('fixed');
+                    }
+                });
+
+            }
+
+        });
+    </script>
+</body>
+
+</html>
